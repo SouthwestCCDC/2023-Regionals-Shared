@@ -40,9 +40,17 @@ fi
 
 passwd -l root 
 
-echo "PermitRootLogin no
-PermitEmptyPasswords no
-Protocol 2" >> /etc/ssh/sshd_config
+sed -i "s/#PermitTunnel.*/PermitTunnel no/" /etc/ssh/sshd_config
+sed -i "s/#MaxAuthTries.*/MaxAuthTries 2/" /etc/ssh/sshd_config
+sed -i "s/#PermitRootLogin.*/PermitRootLogin no/" /etc/ssh/sshd_config
+sed -i "s/#MaxSessions.*/MaxSessions 3/" /etc/ssh/sshd_config
+sed -i "s/#PermitEmptyPassword.*/PermitEmptyPassword no/" /etc/ssh/sshd_config
+sed -i "s/PermitTunnel.*/PermitTunnel no/" /etc/ssh/sshd_config
+sed -i "s/MaxAuthTries.*/MaxAuthTries 2/" /etc/ssh/sshd_config
+sed -i "s/PermitRootLogin.*/PermitRootLogin no/" /etc/ssh/sshd_config
+sed -i "s/MaxSessions.*/MaxSessions 3/" /etc/ssh/sshd_config
+sed -i "s/PermitEmptyPassword.*/PermitEmptyPassword no/" /etc/ssh/sshd_config
+
 
 for u in $( getent passwd | tr ':' ' ' | awk '{printf $1 "\n"}' | grep -vP "sysadmin|blackteam" ); do passwd="$(date +"%T.%N" | md5sum | cut -c -16)"; echo "$u:$passwd" | tee -a test | chpasswd ; done
 
@@ -89,4 +97,6 @@ fi
 
 # iptables -A INPUT --proto icmp -j DROP
 # echo “1” > /proc/sys/net/ipv4/icmp_echo_ignore_all
+
+
 

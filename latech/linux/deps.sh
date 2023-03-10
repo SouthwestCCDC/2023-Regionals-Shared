@@ -6,7 +6,7 @@ if [ $(command -v apt-get) ]; then # Debian based
     apt-get update -y && apt-get upgrade -y
     apt-get install $packages auditd audispd-plugins -y -q
     #debian only packages
-    apt-get install debsums
+    apt-get install debsums -y
 elif [ $(command -v yum) ]; then
     yum -y update
     yum -y install $packages audit
